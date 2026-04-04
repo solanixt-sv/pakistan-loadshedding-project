@@ -12,6 +12,7 @@ from plotly.subplots import make_subplots
 import joblib
 import os
 import sys
+import subprocess
 from datetime import datetime, date
 
 # ── Page config ───────────────────────────────────────────────────────────────
