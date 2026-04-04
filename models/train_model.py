@@ -15,11 +15,16 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from xgboost import XGBRegressor
 
-os.makedirs('models', exist_ok=True)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+MODEL_DIR = os.path.join(BASE_DIR, 'models')
+DATA_PATH = os.path.join(DATA_DIR, 'load_shedding_data.csv')
+
+os.makedirs(MODEL_DIR, exist_ok=True)
 
 # ── Load data ─────────────────────────────────────────────────────────────────
-df = pd.read_csv('data/load_shedding_data.csv')
-print(f"Loaded {len(df)} rows\n")
+df = pd.read_csv(DATA_PATH)
+print(f"Loaded {len(df)} rows from {DATA_PATH}\n")
 
 # ── Feature engineering ───────────────────────────────────────────────────────
 le_city   = LabelEncoder()
@@ -64,11 +69,13 @@ best_model = results[best_name]['model']
 print(f"\n🏆 Best model: {best_name}")
 
 # ── Save artefacts ────────────────────────────────────────────────────────────
-joblib.dump(best_model,  'models/model.pkl')
-joblib.dump(le_city,     'models/le_city.pkl')
-joblib.dump(le_area,     'models/le_area.pkl')
-joblib.dump(le_season,   'models/le_season.pkl')
-joblib.dump(le_dow,      'models/le_dow.pkl')
-joblib.dump(FEATURES,    'models/feature_names.pkl')
+joblib.dump(best_model,  os.path.join(MODEL_DIR, 'model.pkl'))
+joblib.dump(le_city,     os.path.join(MODEL_DIR, 'le_city.pkl'))
+joblib.dump(le_area,     os.path.join(MODEL_DIR, 'le_area.pkl'))
+joblib.dump(le_season,   os.path.join(MODEL_DIR, 'le_season.pkl'))
+joblib.dump(le_dow,      os.path.join(MODEL_DIR, 'le_dow.pkl'))
+joblib.dump(FEATURES,    os.path.join(MODEL_DIR, 'feature_names.pkl'))
+
+print(f"✅ Saved artefacts to: {MODEL_DIR}")
 
 print("✅ Saved: models/model.pkl  +  encoder files")

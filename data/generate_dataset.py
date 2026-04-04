@@ -114,10 +114,15 @@ for _ in range(5000):
 df = pd.DataFrame(rows)
 df = df.sort_values(['date', 'city', 'hour']).reset_index(drop=True)
 
-os.makedirs('data', exist_ok=True)
-df.to_csv('data/load_shedding_data.csv', index=False)
+# ── Save Dataset ──────────────────────────────────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+DATA_PATH = os.path.join(DATA_DIR, 'load_shedding_data.csv')
 
-print(f"✅ Dataset generated: {len(df)} rows")
+os.makedirs(DATA_DIR, exist_ok=True)
+df.to_csv(DATA_PATH, index=False)
+
+print(f"✅ Dataset generated: {len(df)} rows at {DATA_PATH}")
 print(df.describe())
 print("\nSample rows:")
 print(df.head(10).to_string())
