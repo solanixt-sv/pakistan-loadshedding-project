@@ -103,10 +103,9 @@ def run_generator():
     
     os.makedirs(DATA_DIR, exist_ok=True)
     df.to_csv(DATA_PATH, index=False)
-    print(f"✅ Dataset generated: {len(df)} rows at {DATA_PATH}")
+    print(df.describe())
+    print("\nSample rows:")
+    print(df.head(10).to_string())
 
 if __name__ == "__main__":
     run_generator()
-print(df.describe())
-print("\nSample rows:")
-print(df.head(10).to_string())

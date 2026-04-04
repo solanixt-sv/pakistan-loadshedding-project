@@ -82,8 +82,7 @@ def run_training():
     joblib.dump(FEATURES,    os.path.join(MODEL_DIR, 'feature_names.pkl'))
     
     print(f"✅ Saved artefacts to: {MODEL_DIR}")
+    print("✅ Saved: models/model.pkl  +  encoder files")
 
 if __name__ == "__main__":
     run_training()
-
-print("✅ Saved: models/model.pkl  +  encoder files")
