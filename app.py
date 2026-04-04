@@ -196,29 +196,29 @@ def load_model():
         return None, None, None, None, None
 
 # ── Initialization ────────────────────────────────────────────────────────────
-from data.generate_dataset import run_generator
-from models.train_model import run_training
-
-if not os.path.exists(DATA_PATH):
-    with st.spinner("Initializing complete dataset (First run only)..."):
-        try:
+try:
+    from data.generate_dataset import run_generator
+    from models.train_model import run_training
+    
+    if not os.path.exists(DATA_PATH):
+        with st.spinner("Initializing complete dataset (First run only)..."):
             run_generator()
             st.success("✅ Dataset generated successfully.")
-        except Exception as e:
-            st.error(f"Error running dataset generator: {e}")
-    st.cache_data.clear()
-
-if not os.path.exists(MODEL_PATH):
-    with st.spinner("Training Machine Learning models (First run only)..."):
-        try:
+        st.cache_data.clear()
+    
+    if not os.path.exists(MODEL_PATH):
+        with st.spinner("Training Machine Learning models (First run only)..."):
             run_training()
             st.success("✅ ML Model trained successfully.")
-        except Exception as e:
-            st.error(f"Error running model trainer: {e}")
-    st.cache_resource.clear()
+        st.cache_resource.clear()
+        
+    df = load_data()
+    model, le_city, le_area, le_sea, le_dow = load_model()
 
-df = load_data()
-model, le_city, le_area, le_sea, le_dow = load_model()
+except Exception as e:
+    st.error("🚨 Startup Error Detected")
+    st.exception(e)
+    st.stop()
 
 CITIES  = ['Karachi', 'Lahore', 'Islamabad', 'Peshawar', 'Quetta']
 CITY_AREAS = {
