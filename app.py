@@ -196,17 +196,14 @@ def load_model():
         return None, None, None, None, None
 
 # ── Initialization ────────────────────────────────────────────────────────────
-GEN_SCRIPT = os.path.join(BASE, 'data', 'generate_dataset.py')
-TRAIN_SCRIPT = os.path.join(BASE, 'models', 'train_model.py')
+from data.generate_dataset import run_generator
+from models.train_model import run_training
 
 if not os.path.exists(DATA_PATH):
     with st.spinner("Initializing complete dataset (First run only)..."):
         try:
-            result = subprocess.run([sys.executable, GEN_SCRIPT], cwd=BASE, capture_output=True, text=True)
-            if result.returncode != 0:
-                st.error(f"Dataset generation failed: {result.stderr}")
-            else:
-                st.success("✅ Dataset generated successfully.")
+            run_generator()
+            st.success("✅ Dataset generated successfully.")
         except Exception as e:
             st.error(f"Error running dataset generator: {e}")
     st.cache_data.clear()
@@ -214,11 +211,8 @@ if not os.path.exists(DATA_PATH):
 if not os.path.exists(MODEL_PATH):
     with st.spinner("Training Machine Learning models (First run only)..."):
         try:
-            result = subprocess.run([sys.executable, TRAIN_SCRIPT], cwd=BASE, capture_output=True, text=True)
-            if result.returncode != 0:
-                st.error(f"Model training failed: {result.stderr}")
-            else:
-                st.success("✅ ML Model trained successfully.")
+            run_training()
+            st.success("✅ ML Model trained successfully.")
         except Exception as e:
             st.error(f"Error running model trainer: {e}")
     st.cache_resource.clear()
